@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('unidad_aprendizaje_id')->constrained('unidades_aprendizaje')->cascadeOnDelete();
             $table->foreignId('profesor_id')->constrained('profesores')->cascadeOnDelete();
             $table->foreignId('salon_id')->constrained('salones')->cascadeOnDelete();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

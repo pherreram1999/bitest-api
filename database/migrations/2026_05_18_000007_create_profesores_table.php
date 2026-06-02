@@ -11,9 +11,11 @@ return new class extends Migration
         Schema::create('profesores', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('email')->unique();
+            $table->string('email');
             $table->foreignId('area_id')->constrained('areas')->cascadeOnDelete();
+            $table->softDeletes();
             $table->timestamps();
+            $table->unique(['email', 'deleted_at']);
         });
     }
 

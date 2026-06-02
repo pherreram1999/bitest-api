@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->foreignId('edificio_id')->constrained('edificios')->cascadeOnDelete();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

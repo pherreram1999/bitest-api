@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
@@ -14,6 +15,7 @@ use Illuminate\Support\Carbon;
  * @property string $nombre
  * @property string $email
  * @property int $area_id
+ * @property Carbon|null $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read Area $area
@@ -22,6 +24,8 @@ use Illuminate\Support\Carbon;
 #[Fillable(['nombre', 'email', 'area_id'])]
 class Profesor extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'profesores';
 
     /**

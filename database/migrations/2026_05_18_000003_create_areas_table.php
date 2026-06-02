@@ -11,8 +11,10 @@ return new class extends Migration
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('email')->unique();
+            $table->string('email');
+            $table->softDeletes();
             $table->timestamps();
+            $table->unique(['email', 'deleted_at']);
         });
     }
 

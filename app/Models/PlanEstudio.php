@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
@@ -13,6 +14,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon $periodo_inicial
  * @property Carbon $periodo_final
  * @property int $carrera_id
+ * @property Carbon|null $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read Carrera $carrera
@@ -20,6 +22,8 @@ use Illuminate\Support\Carbon;
 #[Fillable(['nombre', 'periodo_inicial', 'periodo_final', 'carrera_id'])]
 class PlanEstudio extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'planes_estudio';
 
     /**

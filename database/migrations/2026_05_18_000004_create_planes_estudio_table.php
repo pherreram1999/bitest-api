@@ -14,6 +14,7 @@ return new class extends Migration
             $table->date('periodo_inicial');
             $table->date('periodo_final');
             $table->foreignId('carrera_id')->constrained('carreras')->cascadeOnDelete();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

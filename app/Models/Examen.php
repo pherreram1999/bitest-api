@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 /**
@@ -16,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property int $unidad_aprendizaje_id
  * @property int $profesor_id
  * @property int $salon_id
+ * @property Carbon|null $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read User $usuario
@@ -34,6 +36,8 @@ use Illuminate\Support\Carbon;
 ])]
 class Examen extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'examenes';
 
     /**
