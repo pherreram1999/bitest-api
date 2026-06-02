@@ -166,6 +166,24 @@ Frontend público en rutas web. Coexiste con Filament (`/admin`) y la API Sanctu
 
 Stack: Tailwind v3 + Alpine.js + Vite (`npm run build`).
 
+## OpenAPI / Spec para LLMs
+
+Spec estático público (sin auth):
+
+```
+GET /api.json          → OpenAPI 3.1.0, 28 paths, 27 schemas
+GET /docs/api          → UI Stoplight Elements (solo local, RestrictedDocsAccess)
+```
+
+Regenerar tras cambios de API:
+
+```bash
+php artisan scramble:export --path=public/api.json
+```
+
+Generador: `dedoc/scramble` v0.13 — infiere desde FormRequests + Resources + tipos de retorno.
+Seguridad: `MiddlewareAuthSecurityStrategy` — rutas con `auth:sanctum` → bearer requerido; `auth/register` y `auth/login` → públicas.
+
 ## Comandos
 
 ```bash
