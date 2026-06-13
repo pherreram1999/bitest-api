@@ -257,7 +257,7 @@
 <table class="header-outer" cellpadding="0" cellspacing="0">
   <tr>
     <td>
-      <p class="header-brand">bitest &nbsp;&middot;&nbsp; Tecnológico Nacional de México</p>
+      <p class="header-brand">bitest &nbsp;&middot;&nbsp; ESCOM &ndash; Instituto Politécnico Nacional</p>
       <p class="header-title">Calendario de Exámenes</p>
       <p class="header-sub">Comprobante oficial de inscripción &mdash; Ciclo {{ now()->format('Y') }}</p>
     </td>

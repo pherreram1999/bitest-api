@@ -114,7 +114,7 @@ class MisExamenesController extends Controller
 
         $lines[] = 'END:VCALENDAR';
 
-        return response(implode("\r\n", $lines), 200, [
+        return response(implode("\r\n", $lines) . "\r\n", 200, [
             'Content-Type'        => 'text/calendar; charset=utf-8',
             'Content-Disposition' => 'attachment; filename="calendario-examenes.ics"',
         ]);
@@ -140,7 +140,7 @@ class MisExamenesController extends Controller
 
         $slug = str($examen->unidadAprendizaje->nombre)->slug()->value();
 
-        return response(implode("\r\n", $lines), 200, [
+        return response(implode("\r\n", $lines) . "\r\n", 200, [
             'Content-Type'        => 'text/calendar; charset=utf-8',
             'Content-Disposition' => 'attachment; filename="examen-' . $slug . '.ics"',
         ]);
@@ -148,11 +148,14 @@ class MisExamenesController extends Controller
 
     private function veventLines(Examen $examen): array
     {
+        $now = now()->utc()->format('Ymd\THis\Z');
+
         return [
             'BEGIN:VEVENT',
             'UID:examen-' . $examen->id . '@bitest',
-            'DTSTART:' . $examen->horario->format('Ymd\THis\Z'),
-            'DTEND:' . $examen->horario->copy()->addHours(2)->format('Ymd\THis\Z'),
+            'DTSTAMP:' . $now,
+            'DTSTART;TZID=America/Mexico_City:' . $examen->horario->format('Ymd\THis'),
+            'DTEND;TZID=America/Mexico_City:' . $examen->horario->copy()->addHours(2)->format('Ymd\THis'),
             'SUMMARY:' . $examen->unidadAprendizaje->nombre,
             'LOCATION:' . $examen->salon->nombre,
             'DESCRIPTION:Profesor: ' . $examen->profesor->nombre,

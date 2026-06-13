@@ -1,5 +1,11 @@
 # bitets-api
 
+## Institución
+
+**ESCOM** — Escuela Superior de Cómputo, **IPN** — Instituto Politécnico Nacional.
+
+Usar en cualquier texto institucional, encabezados de PDF, reportes, o branding de la app.
+
 ## Stack
 
 - **Framework:** Laravel 13.8
