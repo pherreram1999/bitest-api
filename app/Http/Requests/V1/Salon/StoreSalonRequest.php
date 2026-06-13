@@ -14,7 +14,7 @@ class StoreSalonRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre'      => ['required', 'string', 'max:255'],
+            'nombre' => ['required', 'string', 'max:255'],
             'edificio_id' => ['required', 'integer', 'exists:edificios,id,deleted_at,NULL'],
         ];
     }

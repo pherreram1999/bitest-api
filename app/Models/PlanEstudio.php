@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasApiFilters;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -13,18 +15,23 @@ use Illuminate\Support\Carbon;
  * @property string $nombre
  * @property Carbon $periodo_inicial
  * @property Carbon $periodo_final
- * @property int $carrera_id
  * @property Carbon|null $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
- * @property-read Carrera $carrera
+ * @property-read Collection<int, UnidadAprendizaje> $unidadesAprendizaje
  */
-#[Fillable(['nombre', 'periodo_inicial', 'periodo_final', 'carrera_id'])]
+#[Fillable(['nombre', 'periodo_inicial', 'periodo_final'])]
 class PlanEstudio extends Model
 {
-    use SoftDeletes;
+    use HasApiFilters, SoftDeletes;
 
     protected $table = 'planes_estudio';
+
+    /** @var array<int, string> */
+    protected array $filterableText = ['nombre'];
+
+    /** @var array<int, string> */
+    protected array $filterableDate = ['periodo_inicial', 'periodo_final'];
 
     /**
      * @return array<string, string>
@@ -38,12 +45,12 @@ class PlanEstudio extends Model
     }
 
     /**
-     * Carrera a la que pertenece el plan de estudios.
+     * Unidades de aprendizaje del plan.
      *
-     * @return BelongsTo<Carrera, $this>
+     * @return HasMany<UnidadAprendizaje, $this>
      */
-    public function carrera(): BelongsTo
+    public function unidadesAprendizaje(): HasMany
     {
-        return $this->belongsTo(Carrera::class);
+        return $this->hasMany(UnidadAprendizaje::class);
     }
 }

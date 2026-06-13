@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasApiFilters;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -24,9 +25,18 @@ use Illuminate\Support\Carbon;
 #[Fillable(['nombre', 'email', 'area_id'])]
 class Profesor extends Model
 {
-    use SoftDeletes;
+    use HasApiFilters, SoftDeletes;
 
     protected $table = 'profesores';
+
+    /** @var array<int, string> */
+    protected $with = ['area'];
+
+    /** @var array<int, string> */
+    protected array $filterableText = ['nombre', 'email'];
+
+    /** @var array<int, string> */
+    protected array $filterableExact = ['area_id'];
 
     /**
      * Área a la que pertenece el profesor.

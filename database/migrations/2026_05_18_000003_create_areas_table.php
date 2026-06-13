@@ -11,10 +11,11 @@ return new class extends Migration
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('email');
+            $table->string('clave');
+            $table->text('observaciones')->nullable();
             $table->softDeletes();
             $table->timestamps();
-            $table->unique(['email', 'deleted_at']);
+            $table->unique(['clave', 'deleted_at']);
         });
     }
 

@@ -28,11 +28,20 @@ class SalonResource extends Resource
 
     protected static \UnitEnum|string|null $navigationGroup = 'Infraestructura';
 
-    public static function canCreate(): bool { return false; }
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
-    public static function canEdit(mixed $record): bool { return false; }
+    public static function canEdit(mixed $record): bool
+    {
+        return false;
+    }
 
-    public static function canDelete(mixed $record): bool { return false; }
+    public static function canDelete(mixed $record): bool
+    {
+        return false;
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -58,7 +67,7 @@ class SalonResource extends Resource
     {
         return [
             'index' => ListSalons::route('/'),
-            'view'  => ViewSalon::route('/{record}'),
+            'view' => ViewSalon::route('/{record}'),
         ];
     }
 

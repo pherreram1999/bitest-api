@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasApiFilters;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +21,10 @@ use Illuminate\Support\Carbon;
 #[Fillable(['nombre'])]
 class Edificio extends Model
 {
-    use SoftDeletes;
+    use HasApiFilters, SoftDeletes;
+
+    /** @var array<int, string> */
+    protected array $filterableText = ['nombre'];
 
     /**
      * Salones del edificio.

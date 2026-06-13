@@ -15,8 +15,8 @@ class StoreProfesorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre'  => ['required', 'string', 'max:255'],
-            'email'   => ['required', 'email', Rule::unique('profesores', 'email')->whereNull('deleted_at')],
+            'nombre' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', Rule::unique('profesores', 'email')->whereNull('deleted_at')],
             'area_id' => ['required', 'integer', 'exists:areas,id,deleted_at,NULL'],
         ];
     }

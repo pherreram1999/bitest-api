@@ -21,8 +21,6 @@ class PlanEstudiosTable
                 TextColumn::make('periodo_final')
                     ->date()
                     ->sortable(),
-                TextColumn::make('carrera.id')
-                    ->searchable(),
                 TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()

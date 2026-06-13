@@ -17,9 +17,6 @@ class ExamenForm
                     ->required(),
                 DateTimePicker::make('horario')
                     ->required(),
-                TextInput::make('semestre')
-                    ->required()
-                    ->numeric(),
                 TextInput::make('user_id')
                     ->required()
                     ->numeric(),

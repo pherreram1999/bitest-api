@@ -28,11 +28,20 @@ class UnidadAprendizajeResource extends Resource
 
     protected static \UnitEnum|string|null $navigationGroup = 'Académico';
 
-    public static function canCreate(): bool { return false; }
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
-    public static function canEdit(mixed $record): bool { return false; }
+    public static function canEdit(mixed $record): bool
+    {
+        return false;
+    }
 
-    public static function canDelete(mixed $record): bool { return false; }
+    public static function canDelete(mixed $record): bool
+    {
+        return false;
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -58,7 +67,7 @@ class UnidadAprendizajeResource extends Resource
     {
         return [
             'index' => ListUnidadAprendizajes::route('/'),
-            'view'  => ViewUnidadAprendizaje::route('/{record}'),
+            'view' => ViewUnidadAprendizaje::route('/{record}'),
         ];
     }
 

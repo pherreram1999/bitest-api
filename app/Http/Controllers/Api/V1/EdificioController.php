@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\Edificio\IndexEdificioRequest;
 use App\Http\Requests\V1\Edificio\StoreEdificioRequest;
 use App\Http\Requests\V1\Edificio\UpdateEdificioRequest;
 use App\Http\Resources\V1\EdificioResource;
@@ -13,32 +14,36 @@ use Illuminate\Http\Response;
 
 class EdificioController extends Controller
 {
-    public function index(): AnonymousResourceCollection
+    public function index(IndexEdificioRequest $request): AnonymousResourceCollection
     {
-        return EdificioResource::collection(Edificio::paginate(15));
+        return EdificioResource::collection(
+            Edificio::with('salones')->applyFilters($request->validated())->paginate(15)
+        );
     }
 
     public function store(StoreEdificioRequest $request): JsonResponse
     {
-        return (new EdificioResource(Edificio::create($request->validated())))
+        return (new EdificioResource(Edificio::create($request->validated())->load('salones')))
             ->response()
             ->setStatusCode(201);
     }
 
     public function show(Edificio $edificio): EdificioResource
     {
-        return new EdificioResource($edificio);
+        return new EdificioResource($edificio->load('salones'));
     }
 
     public function update(UpdateEdificioRequest $request, Edificio $edificio): EdificioResource
     {
         $edificio->update($request->validated());
-        return new EdificioResource($edificio);
+
+        return new EdificioResource($edificio->load('salones'));
     }
 
     public function destroy(Edificio $edificio): Response
     {
         $edificio->delete();
+
         return response()->noContent();
     }
 
@@ -46,6 +51,7 @@ class EdificioController extends Controller
     {
         $edificio = Edificio::onlyTrashed()->findOrFail($id);
         $edificio->restore();
-        return new EdificioResource($edificio);
+
+        return new EdificioResource($edificio->load('salones'));
     }
 }

@@ -17,8 +17,6 @@ class PlanEstudioInfolist
                     ->date(),
                 TextEntry::make('periodo_final')
                     ->date(),
-                TextEntry::make('carrera.id')
-                    ->label('Carrera'),
                 TextEntry::make('deleted_at')
                     ->dateTime()
                     ->visible(fn (PlanEstudio $record): bool => $record->trashed()),

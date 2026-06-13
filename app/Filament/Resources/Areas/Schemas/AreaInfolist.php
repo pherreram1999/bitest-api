@@ -13,8 +13,12 @@ class AreaInfolist
         return $schema
             ->components([
                 TextEntry::make('nombre'),
-                TextEntry::make('email')
-                    ->label('Email address'),
+                TextEntry::make('clave')
+                    ->label('Clave'),
+                TextEntry::make('observaciones')
+                    ->label('Observaciones')
+                    ->placeholder('-')
+                    ->columnSpanFull(),
                 TextEntry::make('deleted_at')
                     ->dateTime()
                     ->visible(fn (Area $record): bool => $record->trashed()),

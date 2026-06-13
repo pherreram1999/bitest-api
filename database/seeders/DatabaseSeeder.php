@@ -16,16 +16,29 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'name'     => 'Admin',
-            'email'    => 'admin@bitets.mx',
-            'password' => Hash::make('admin1234'),
-            'rol'      => 'admin',
+        $this->call([
+            CarreraSeeder::class,
+            PlanEstudioSeeder::class,
+            UnidadAprendizajeObligatoriaSeeder::class,
+            UnidadAprendizajeOptativaSeeder::class,
+            AreaSeeder::class,
+            ProfesorSeeder::class,
+            EdificioSeeder::class,
+            SalonSeeder::class,
         ]);
 
         User::factory()->create([
-            'name'  => 'Test User',
+            'name' => 'Admin',
+            'email' => 'admin@bitets.mx',
+            'password' => Hash::make('1205'),
+            'rol' => 'admin',
+            'identificador' => 'admin',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Test User',
             'email' => 'test@example.com',
+            'identificador' => '20230001',
         ]);
     }
 }

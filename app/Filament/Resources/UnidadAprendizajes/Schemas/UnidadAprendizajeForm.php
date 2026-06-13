@@ -14,8 +14,15 @@ class UnidadAprendizajeForm
             ->components([
                 TextInput::make('nombre')
                     ->required(),
+                TextInput::make('semestre')
+                    ->numeric()
+                    ->minValue(1)
+                    ->maxValue(12),
                 Select::make('carrera_id')
-                    ->relationship('carrera', 'id')
+                    ->relationship('carrera', 'nombre')
+                    ->required(),
+                Select::make('plan_estudio_id')
+                    ->relationship('planEstudio', 'nombre')
                     ->required(),
             ]);
     }

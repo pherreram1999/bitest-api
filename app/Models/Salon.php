@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasApiFilters;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -23,9 +24,18 @@ use Illuminate\Support\Carbon;
 #[Fillable(['nombre', 'edificio_id'])]
 class Salon extends Model
 {
-    use SoftDeletes;
+    use HasApiFilters, SoftDeletes;
 
     protected $table = 'salones';
+
+    /** @var array<int, string> */
+    protected $with = ['edificio'];
+
+    /** @var array<int, string> */
+    protected array $filterableText = ['nombre'];
+
+    /** @var array<int, string> */
+    protected array $filterableExact = ['edificio_id'];
 
     /**
      * Edificio al que pertenece el salón.

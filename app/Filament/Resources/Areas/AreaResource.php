@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Areas;
 
+use App\Filament\Resources\Areas\Pages\CreateArea;
+use App\Filament\Resources\Areas\Pages\EditArea;
 use App\Filament\Resources\Areas\Pages\ListAreas;
 use App\Filament\Resources\Areas\Pages\ViewArea;
 use App\Filament\Resources\Areas\Schemas\AreaForm;
@@ -28,11 +30,10 @@ class AreaResource extends Resource
 
     protected static \UnitEnum|string|null $navigationGroup = 'Personal';
 
-    public static function canCreate(): bool { return false; }
-
-    public static function canEdit(mixed $record): bool { return false; }
-
-    public static function canDelete(mixed $record): bool { return false; }
+    public static function canDelete(mixed $record): bool
+    {
+        return false;
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -58,7 +59,9 @@ class AreaResource extends Resource
     {
         return [
             'index' => ListAreas::route('/'),
-            'view'  => ViewArea::route('/{record}'),
+            'create' => CreateArea::route('/create'),
+            'view' => ViewArea::route('/{record}'),
+            'edit' => EditArea::route('/{record}/edit'),
         ];
     }
 

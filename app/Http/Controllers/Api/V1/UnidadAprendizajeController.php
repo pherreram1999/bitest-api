@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\UnidadAprendizaje\IndexUnidadAprendizajeRequest;
 use App\Http\Requests\V1\UnidadAprendizaje\StoreUnidadAprendizajeRequest;
 use App\Http\Requests\V1\UnidadAprendizaje\UpdateUnidadAprendizajeRequest;
 use App\Http\Resources\V1\UnidadAprendizajeResource;
@@ -13,9 +14,11 @@ use Illuminate\Http\Response;
 
 class UnidadAprendizajeController extends Controller
 {
-    public function index(): AnonymousResourceCollection
+    public function index(IndexUnidadAprendizajeRequest $request): AnonymousResourceCollection
     {
-        return UnidadAprendizajeResource::collection(UnidadAprendizaje::paginate(15));
+        return UnidadAprendizajeResource::collection(
+            UnidadAprendizaje::applyFilters($request->validated())->paginate(15)
+        );
     }
 
     public function store(StoreUnidadAprendizajeRequest $request): JsonResponse
@@ -33,12 +36,14 @@ class UnidadAprendizajeController extends Controller
     public function update(UpdateUnidadAprendizajeRequest $request, UnidadAprendizaje $unidad_aprendizaje): UnidadAprendizajeResource
     {
         $unidad_aprendizaje->update($request->validated());
+
         return new UnidadAprendizajeResource($unidad_aprendizaje);
     }
 
     public function destroy(UnidadAprendizaje $unidad_aprendizaje): Response
     {
         $unidad_aprendizaje->delete();
+
         return response()->noContent();
     }
 
@@ -46,6 +51,7 @@ class UnidadAprendizajeController extends Controller
     {
         $unidad = UnidadAprendizaje::onlyTrashed()->findOrFail($id);
         $unidad->restore();
+
         return new UnidadAprendizajeResource($unidad);
     }
 }

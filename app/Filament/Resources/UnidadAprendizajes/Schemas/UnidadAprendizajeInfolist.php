@@ -13,8 +13,11 @@ class UnidadAprendizajeInfolist
         return $schema
             ->components([
                 TextEntry::make('nombre'),
-                TextEntry::make('carrera.id')
+                TextEntry::make('semestre'),
+                TextEntry::make('carrera.nombre')
                     ->label('Carrera'),
+                TextEntry::make('planEstudio.nombre')
+                    ->label('Plan de estudios'),
                 TextEntry::make('deleted_at')
                     ->dateTime()
                     ->visible(fn (UnidadAprendizaje $record): bool => $record->trashed()),

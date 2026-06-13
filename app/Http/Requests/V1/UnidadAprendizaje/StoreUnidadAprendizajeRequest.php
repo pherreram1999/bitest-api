@@ -14,8 +14,10 @@ class StoreUnidadAprendizajeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre'     => ['required', 'string', 'max:255'],
+            'nombre' => ['required', 'string', 'max:255'],
+            'semestre' => ['nullable', 'integer', 'min:1', 'max:12'],
             'carrera_id' => ['required', 'integer', 'exists:carreras,id,deleted_at,NULL'],
+            'plan_estudio_id' => ['required', 'integer', 'exists:planes_estudio,id,deleted_at,NULL'],
         ];
     }
 }

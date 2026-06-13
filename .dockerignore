@@ -1,0 +1,49 @@
+# Excluir del contexto de build de Docker
+# (mantener la imagen pequeña y no filtrar secretos)
+
+# VCS y editores
+.git
+.gitignore
+.gitattributes
+.github
+.idea
+.cursor
+.vscode
+.zed
+.opencode
+.claude
+.codex
+
+# Dependencias y builds locales
+node_modules
+vendor
+public/build
+public/hot
+public/storage
+
+# Estado/runtime
+storage/logs/*
+storage/framework/cache/data/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/pail
+storage/app.key
+auth.json
+.phpunit.result.cache
+.phpunit.cache
+
+# Entorno — no copiar al imagen; pasar vía --env-file o secrets
+.env
+.env.*
+!.env.example
+auth.json
+
+# Binario de FrankenPHP del host (la imagen trae el suyo)
+/frankenphp
+/frankenphp-worker.php
+/caddy
+
+# Tests y dev
+tests
+.phpunit.xml
+/.scramble

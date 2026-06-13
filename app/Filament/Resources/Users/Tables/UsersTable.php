@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Users\Tables;
 
+use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
@@ -17,6 +18,8 @@ class UsersTable
                     ->searchable(),
                 TextColumn::make('email')
                     ->label('Email address')
+                    ->searchable(),
+                TextColumn::make('identificador')
                     ->searchable(),
                 TextColumn::make('email_verified_at')
                     ->dateTime()
@@ -41,6 +44,7 @@ class UsersTable
             ])
             ->recordActions([
                 ViewAction::make(),
+                EditAction::make(),
             ])
             ->toolbarActions([]);
     }

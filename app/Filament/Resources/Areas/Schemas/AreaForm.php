@@ -2,8 +2,10 @@
 
 namespace App\Filament\Resources\Areas\Schemas;
 
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
+use Illuminate\Validation\Rule;
 
 class AreaForm
 {
@@ -12,11 +14,24 @@ class AreaForm
         return $schema
             ->components([
                 TextInput::make('nombre')
-                    ->required(),
-                TextInput::make('email')
-                    ->label('Email address')
-                    ->email()
-                    ->required(),
+                    ->label('Nombre')
+                    ->required()
+                    ->maxLength(255),
+
+                TextInput::make('clave')
+                    ->label('Clave')
+                    ->required()
+                    ->maxLength(255)
+                    ->unique(
+                        ignoreRecord: true,
+                        modifyRuleUsing: fn (Rule $rule) => $rule->whereNull('deleted_at'),
+                    ),
+
+                Textarea::make('observaciones')
+                    ->label('Observaciones')
+                    ->rows(3)
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
             ]);
     }
 }

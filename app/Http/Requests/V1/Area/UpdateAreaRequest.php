@@ -16,13 +16,15 @@ class UpdateAreaRequest extends FormRequest
     {
         return [
             'nombre' => ['sometimes', 'string', 'max:255'],
-            'email'  => [
+            'clave' => [
                 'sometimes',
-                'email',
-                Rule::unique('areas', 'email')
+                'string',
+                'max:255',
+                Rule::unique('areas', 'clave')
                     ->whereNull('deleted_at')
                     ->ignore($this->route('area')),
             ],
+            'observaciones' => ['sometimes', 'nullable', 'string'],
         ];
     }
 }

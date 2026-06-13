@@ -14,10 +14,9 @@ class StorePlanEstudioRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre'          => ['required', 'string', 'max:255'],
+            'nombre' => ['required', 'string', 'max:255'],
             'periodo_inicial' => ['required', 'date'],
-            'periodo_final'   => ['required', 'date', 'after:periodo_inicial'],
-            'carrera_id'      => ['required', 'integer', 'exists:carreras,id,deleted_at,NULL'],
+            'periodo_final' => ['required', 'date', 'after:periodo_inicial'],
         ];
     }
 }

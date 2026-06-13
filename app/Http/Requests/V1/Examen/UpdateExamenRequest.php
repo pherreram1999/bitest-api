@@ -14,13 +14,13 @@ class UpdateExamenRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'descripcion'           => ['sometimes', 'string', 'max:255'],
-            'horario'               => ['sometimes', 'date'],
-            'semestre'              => ['sometimes', 'integer', 'between:1,12'],
-            'user_id'               => ['sometimes', 'integer', 'exists:users,id,deleted_at,NULL'],
+            'descripcion' => ['sometimes', 'string', 'max:255'],
+            'horario' => ['sometimes', 'date'],
+            'activo' => ['sometimes', 'boolean'],
+            'user_id' => ['sometimes', 'integer', 'exists:users,id,deleted_at,NULL'],
             'unidad_aprendizaje_id' => ['sometimes', 'integer', 'exists:unidades_aprendizaje,id,deleted_at,NULL'],
-            'profesor_id'           => ['sometimes', 'integer', 'exists:profesores,id,deleted_at,NULL'],
-            'salon_id'              => ['sometimes', 'integer', 'exists:salones,id,deleted_at,NULL'],
+            'profesor_id' => ['sometimes', 'integer', 'exists:profesores,id,deleted_at,NULL'],
+            'salon_id' => ['sometimes', 'integer', 'exists:salones,id,deleted_at,NULL'],
         ];
     }
 }

@@ -22,16 +22,17 @@ class AuthController extends Controller
     public function register(RegisterRequest $request): JsonResponse
     {
         $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
+            'name' => $request->name,
+            'email' => $request->email,
+            'identificador' => $request->identificador,
             'password' => Hash::make($request->password),
-            'rol'      => $request->rol ?? 'alumno',
+            'rol' => $request->rol ?? 'alumno',
         ]);
 
-        $token = $user->createToken($request->device_name ?? 'api')->plainTextToken;
+        $token = $user->createToken($request->device_name)->plainTextToken;
 
         return response()->json([
-            'user'  => new UserResource($user),
+            'user' => new UserResource($user),
             'token' => $token,
         ], 201);
     }
@@ -43,18 +44,18 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        if (! Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (! Auth::attempt(['identificador' => $request->identificador, 'password' => $request->password])) {
             throw ValidationException::withMessages([
-                'email' => [__('auth.failed')],
+                'identificador' => [__('auth.failed')],
             ]);
         }
 
         /** @var User $user */
-        $user  = Auth::user();
-        $token = $user->createToken($request->device_name ?? 'api')->plainTextToken;
+        $user = Auth::user();
+        $token = $user->createToken($request->device_name)->plainTextToken;
 
         return response()->json([
-            'user'  => new UserResource($user),
+            'user' => new UserResource($user),
             'token' => $token,
         ]);
     }

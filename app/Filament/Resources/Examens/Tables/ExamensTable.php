@@ -18,7 +18,8 @@ class ExamensTable
                 TextColumn::make('horario')
                     ->dateTime()
                     ->sortable(),
-                TextColumn::make('semestre')
+                TextColumn::make('unidadAprendizaje.semestre')
+                    ->label('Semestre')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('user_id')

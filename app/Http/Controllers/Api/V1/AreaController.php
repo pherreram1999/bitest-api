@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\Area\IndexAreaRequest;
 use App\Http\Requests\V1\Area\StoreAreaRequest;
 use App\Http\Requests\V1\Area\UpdateAreaRequest;
 use App\Http\Resources\V1\AreaResource;
@@ -13,32 +14,36 @@ use Illuminate\Http\Response;
 
 class AreaController extends Controller
 {
-    public function index(): AnonymousResourceCollection
+    public function index(IndexAreaRequest $request): AnonymousResourceCollection
     {
-        return AreaResource::collection(Area::paginate(15));
+        return AreaResource::collection(
+            Area::with('profesores')->applyFilters($request->validated())->paginate(15)
+        );
     }
 
     public function store(StoreAreaRequest $request): JsonResponse
     {
-        return (new AreaResource(Area::create($request->validated())))
+        return (new AreaResource(Area::create($request->validated())->load('profesores')))
             ->response()
             ->setStatusCode(201);
     }
 
     public function show(Area $area): AreaResource
     {
-        return new AreaResource($area);
+        return new AreaResource($area->load('profesores'));
     }
 
     public function update(UpdateAreaRequest $request, Area $area): AreaResource
     {
         $area->update($request->validated());
-        return new AreaResource($area);
+
+        return new AreaResource($area->load('profesores'));
     }
 
     public function destroy(Area $area): Response
     {
         $area->delete();
+
         return response()->noContent();
     }
 
@@ -46,6 +51,7 @@ class AreaController extends Controller
     {
         $area = Area::onlyTrashed()->findOrFail($id);
         $area->restore();
-        return new AreaResource($area);
+
+        return new AreaResource($area->load('profesores'));
     }
 }

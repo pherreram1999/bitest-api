@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\PlanEstudio\IndexPlanEstudioRequest;
 use App\Http\Requests\V1\PlanEstudio\StorePlanEstudioRequest;
 use App\Http\Requests\V1\PlanEstudio\UpdatePlanEstudioRequest;
 use App\Http\Resources\V1\PlanEstudioResource;
@@ -13,9 +14,11 @@ use Illuminate\Http\Response;
 
 class PlanEstudioController extends Controller
 {
-    public function index(): AnonymousResourceCollection
+    public function index(IndexPlanEstudioRequest $request): AnonymousResourceCollection
     {
-        return PlanEstudioResource::collection(PlanEstudio::paginate(15));
+        return PlanEstudioResource::collection(
+            PlanEstudio::applyFilters($request->validated())->paginate(15)
+        );
     }
 
     public function store(StorePlanEstudioRequest $request): JsonResponse
@@ -33,12 +36,14 @@ class PlanEstudioController extends Controller
     public function update(UpdatePlanEstudioRequest $request, PlanEstudio $plan_estudio): PlanEstudioResource
     {
         $plan_estudio->update($request->validated());
+
         return new PlanEstudioResource($plan_estudio);
     }
 
     public function destroy(PlanEstudio $plan_estudio): Response
     {
         $plan_estudio->delete();
+
         return response()->noContent();
     }
 
@@ -46,6 +51,7 @@ class PlanEstudioController extends Controller
     {
         $plan = PlanEstudio::onlyTrashed()->findOrFail($id);
         $plan->restore();
+
         return new PlanEstudioResource($plan);
     }
 }

@@ -28,11 +28,20 @@ class EdificioResource extends Resource
 
     protected static \UnitEnum|string|null $navigationGroup = 'Infraestructura';
 
-    public static function canCreate(): bool { return false; }
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
-    public static function canEdit(mixed $record): bool { return false; }
+    public static function canEdit(mixed $record): bool
+    {
+        return false;
+    }
 
-    public static function canDelete(mixed $record): bool { return false; }
+    public static function canDelete(mixed $record): bool
+    {
+        return false;
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -58,7 +67,7 @@ class EdificioResource extends Resource
     {
         return [
             'index' => ListEdificios::route('/'),
-            'view'  => ViewEdificio::route('/{record}'),
+            'view' => ViewEdificio::route('/{record}'),
         ];
     }
 

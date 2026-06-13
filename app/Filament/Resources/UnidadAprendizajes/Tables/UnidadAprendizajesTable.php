@@ -15,7 +15,12 @@ class UnidadAprendizajesTable
             ->columns([
                 TextColumn::make('nombre')
                     ->searchable(),
-                TextColumn::make('carrera.id')
+                TextColumn::make('semestre')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('carrera.nombre')
+                    ->searchable(),
+                TextColumn::make('planEstudio.nombre')
                     ->searchable(),
                 TextColumn::make('deleted_at')
                     ->dateTime()

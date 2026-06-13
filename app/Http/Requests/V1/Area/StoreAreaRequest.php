@@ -16,7 +16,8 @@ class StoreAreaRequest extends FormRequest
     {
         return [
             'nombre' => ['required', 'string', 'max:255'],
-            'email'  => ['required', 'email', Rule::unique('areas', 'email')->whereNull('deleted_at')],
+            'clave' => ['required', 'string', 'max:255', Rule::unique('areas', 'clave')->whereNull('deleted_at')],
+            'observaciones' => ['nullable', 'string'],
         ];
     }
 }

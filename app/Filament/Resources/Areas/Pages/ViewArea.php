@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Areas\Pages;
 
 use App\Filament\Resources\Areas\AreaResource;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewArea extends ViewRecord
@@ -11,6 +12,8 @@ class ViewArea extends ViewRecord
 
     protected function getHeaderActions(): array
     {
-        return [];
+        return [
+            EditAction::make(),
+        ];
     }
 }

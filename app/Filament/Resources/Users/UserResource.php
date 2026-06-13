@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\Users;
 
+use App\Filament\Resources\Users\Pages\CreateUser;
+use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUsers;
 use App\Filament\Resources\Users\Pages\ViewUser;
 use App\Filament\Resources\Users\Schemas\UserForm;
@@ -28,11 +30,10 @@ class UserResource extends Resource
 
     protected static \UnitEnum|string|null $navigationGroup = 'Auth';
 
-    public static function canCreate(): bool { return false; }
-
-    public static function canEdit(mixed $record): bool { return false; }
-
-    public static function canDelete(mixed $record): bool { return false; }
+    public static function canDelete(mixed $record): bool
+    {
+        return false;
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -58,7 +59,9 @@ class UserResource extends Resource
     {
         return [
             'index' => ListUsers::route('/'),
-            'view'  => ViewUser::route('/{record}'),
+            'create' => CreateUser::route('/create'),
+            'view' => ViewUser::route('/{record}'),
+            'edit' => EditUser::route('/{record}/edit'),
         ];
     }
 

@@ -11,9 +11,14 @@ return new class extends Migration
         Schema::create('unidades_aprendizaje', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->unsignedTinyInteger('semestre')->nullable();
             $table->foreignId('carrera_id')->constrained('carreras')->cascadeOnDelete();
+            $table->foreignId('plan_estudio_id')->constrained('planes_estudio')->cascadeOnDelete();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->index('plan_estudio_id');
+            $table->index(['plan_estudio_id', 'semestre']);
         });
     }
 

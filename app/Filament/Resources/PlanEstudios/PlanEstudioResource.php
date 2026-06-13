@@ -28,11 +28,20 @@ class PlanEstudioResource extends Resource
 
     protected static \UnitEnum|string|null $navigationGroup = 'Académico';
 
-    public static function canCreate(): bool { return false; }
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
-    public static function canEdit(mixed $record): bool { return false; }
+    public static function canEdit(mixed $record): bool
+    {
+        return false;
+    }
 
-    public static function canDelete(mixed $record): bool { return false; }
+    public static function canDelete(mixed $record): bool
+    {
+        return false;
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -58,7 +67,7 @@ class PlanEstudioResource extends Resource
     {
         return [
             'index' => ListPlanEstudios::route('/'),
-            'view'  => ViewPlanEstudio::route('/{record}'),
+            'view' => ViewPlanEstudio::route('/{record}'),
         ];
     }
 

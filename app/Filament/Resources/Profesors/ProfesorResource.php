@@ -28,11 +28,20 @@ class ProfesorResource extends Resource
 
     protected static \UnitEnum|string|null $navigationGroup = 'Personal';
 
-    public static function canCreate(): bool { return false; }
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
-    public static function canEdit(mixed $record): bool { return false; }
+    public static function canEdit(mixed $record): bool
+    {
+        return false;
+    }
 
-    public static function canDelete(mixed $record): bool { return false; }
+    public static function canDelete(mixed $record): bool
+    {
+        return false;
+    }
 
     public static function form(Schema $schema): Schema
     {
@@ -58,7 +67,7 @@ class ProfesorResource extends Resource
     {
         return [
             'index' => ListProfesors::route('/'),
-            'view'  => ViewProfesor::route('/{record}'),
+            'view' => ViewProfesor::route('/{record}'),
         ];
     }
 

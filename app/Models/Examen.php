@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasApiFilters;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -12,7 +15,7 @@ use Illuminate\Support\Carbon;
  * @property int $id
  * @property string $descripcion
  * @property Carbon $horario
- * @property int $semestre
+ * @property bool $activo
  * @property int $user_id
  * @property int $unidad_aprendizaje_id
  * @property int $profesor_id
@@ -24,11 +27,12 @@ use Illuminate\Support\Carbon;
  * @property-read UnidadAprendizaje $unidadAprendizaje
  * @property-read Profesor $profesor
  * @property-read Salon $salon
+ * @property-read Collection<int, User> $alumnos
  */
 #[Fillable([
     'descripcion',
     'horario',
-    'semestre',
+    'activo',
     'user_id',
     'unidad_aprendizaje_id',
     'profesor_id',
@@ -36,9 +40,21 @@ use Illuminate\Support\Carbon;
 ])]
 class Examen extends Model
 {
-    use SoftDeletes;
+    use HasApiFilters, SoftDeletes;
 
     protected $table = 'examenes';
+
+    /** @var array<int, string> */
+    protected $with = ['usuario', 'unidadAprendizaje', 'profesor', 'salon'];
+
+    /** @var array<int, string> */
+    protected array $filterableText = ['descripcion'];
+
+    /** @var array<int, string> */
+    protected array $filterableExact = ['user_id', 'unidad_aprendizaje_id', 'profesor_id', 'salon_id'];
+
+    /** @var array<int, string> */
+    protected array $filterableDate = ['horario'];
 
     /**
      * @return array<string, string>
@@ -47,7 +63,7 @@ class Examen extends Model
     {
         return [
             'horario' => 'datetime',
-            'semestre' => 'integer',
+            'activo' => 'boolean',
         ];
     }
 
@@ -89,5 +105,16 @@ class Examen extends Model
     public function salon(): BelongsTo
     {
         return $this->belongsTo(Salon::class);
+    }
+
+    /**
+     * Alumnos inscritos en el examen.
+     *
+     * @return BelongsToMany<User, $this>
+     */
+    public function alumnos(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'alumno_examen', 'examen_id', 'user_id')
+            ->withTimestamps();
     }
 }

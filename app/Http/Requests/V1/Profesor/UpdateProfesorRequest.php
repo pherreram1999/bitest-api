@@ -15,8 +15,8 @@ class UpdateProfesorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre'  => ['sometimes', 'string', 'max:255'],
-            'email'   => [
+            'nombre' => ['sometimes', 'string', 'max:255'],
+            'email' => [
                 'sometimes',
                 'email',
                 Rule::unique('profesores', 'email')

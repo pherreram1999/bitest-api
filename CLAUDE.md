@@ -4,7 +4,17 @@
 
 - **Framework:** Laravel 13.8
 - **PHP:** 8.3
-- **DB:** SQLite (`database/database.sqlite`)
+- **DB:** libSQL/Turso (`turso/libsql`, driver custom) — requiere PHP FFI (`extension=ffi`, `ffi.enable=true`)
+  - Sin `TURSO_DATABASE_URL` → archivo local `database/database.db`
+  - Con `TURSO_DATABASE_URL` + `TURSO_AUTH_TOKEN` → remoto Turso puro
+  - `turso/libsql-laravel` no soporta Laravel 13 (sólo ^11|^12), por eso se
+    registra a mano `DB::extend('libsql', …)` en `AppServiceProvider::boot`,
+    devolviendo un `SQLiteConnection` con un `LibsqlPDO` propio.
+  - `App\Database\LibsqlPDO` y `App\Database\LibsqlPDOStatement` envuelven
+    al PDO de `turso/libsql` y difieren los `bindValue()` hacia `execute($params)`.
+    Esto evita el segfault de FFI al bindear `null`/cadenas vacías con
+    `PDO::PARAM_STR` (la `CharBox` de libsql deja el puntero sin inicializar
+    para strings falsy y `bindValue` no maneja `PARAM_NULL`).
 - **Auth:** Laravel Sanctum — personal access tokens (bearer)
 
 ## Dominio
@@ -12,12 +22,17 @@
 Esquema académico (Peter Chen, bitets.pdf):
 
 ```
-Carrera → PlanEstudio (N planes por carrera)
 Carrera → UnidadAprendizaje (N unidades por carrera)
+PlanEstudio → UnidadAprendizaje (N unidades por plan)
 Edificio → Salon (N salones por edificio)
 Area → Profesor (N profesores por área)
 UnidadAprendizaje + Profesor + Salon + User → Examen
 ```
+
+`Carrera` y `PlanEstudio` **no** tienen relación directa: se conocen entre sí a
+través de `unidades_aprendizaje`, que actúa como puente (`carrera_id` + `plan_estudio_id`).
+
+`unidades_aprendizaje`: `nombre`, `semestre` (TINYINT 1-12, nullable), `carrera_id`, `plan_estudio_id`.
 
 ## Autenticación
 
@@ -27,20 +42,27 @@ requieren `Authorization: Bearer <token>`.
 ### Flow
 
 ```bash
-# 1. Registrar
+# 1. Registrar (identificador es único: boleta para alumnos, clave para administrativos)
 curl -X POST http://localhost:8000/api/v1/auth/register \
   -H 'Accept: application/json' \
   -H 'Content-Type: application/json' \
-  -d '{"name":"Ada","email":"ada@x.mx","password":"secret123","password_confirmation":"secret123"}'
+  -d '{"name":"Ada","email":"ada@x.mx","identificador":"20230042","password":"secret123","password_confirmation":"secret123"}'
 # → {"user":{...},"token":"1|abc..."}
 
-# 2. Usar token
+# 2. Login con identificador
+curl -X POST http://localhost:8000/api/v1/auth/login \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{"identificador":"20230042","password":"secret123"}'
+# → {"user":{...},"token":"1|abc..."}
+
+# 3. Usar token
 TOKEN="1|abc..."
 curl http://localhost:8000/api/v1/carreras \
   -H "Authorization: Bearer $TOKEN" \
   -H 'Accept: application/json'
 
-# 3. Logout (revoca token actual)
+# 4. Logout (revoca token actual)
 curl -X POST http://localhost:8000/api/v1/auth/logout \
   -H "Authorization: Bearer $TOKEN"
 ```
@@ -113,19 +135,36 @@ routes/
 
 ## Panel Filament
 
+**Filament es la interfaz principal del proyecto** — login, CRUDs y navegación se gestionan desde aquí por defecto.
+
 URL: `/admin` — requiere `rol = admin`.
 
-Vista de solo lectura para los 9 modelos. Sin botones de crear/editar/borrar.
-Para crear datos usar la API REST (`/api/v1/...`) o tinker.
+### Login
+
+El login de Filament (`/admin/login`) usa `identificador` + `password`, igual que la API y el login web (Breeze). El campo de email del formulario estándar de Filament está reemplazado por `identificador` mediante `App\Filament\Pages\Auth\Login` (registrado en `AdminPanelProvider`).
+
+### CRUDs
+
+Vista de solo lectura para los 9 modelos — `canCreate/canEdit/canDelete = false`. Para crear o modificar datos usar la API REST (`/api/v1/...`) o tinker. Los CRUDs con escritura se agregan en Filament si se necesitan, no como endpoints adicionales.
 
 ### Usuarios de prueba (via seeder)
 
 `php artisan migrate:fresh --seed` crea automáticamente:
 
-| Email | Password | Rol | Acceso |
-|-------|----------|-----|--------|
-| `admin@bitets.mx` | `admin1234` | admin | `/admin` + `/dashboard` |
-| `test@example.com` | `password` | alumno | solo `/dashboard` |
+| Identificador | Password | Rol | Acceso |
+|---------------|----------|-----|--------|
+| `admin` | `1205` | admin | `/admin` + `/dashboard` |
+| `20230001` | `password` | alumno | solo `/dashboard` |
+
+### Catálogo académico (via seeder)
+
+- 1 carrera: **Ingeniería en Sistemas Computacionales**
+- 1 plan: **ISC 2020** (2020-08-01 → 2030-12-31)
+- **46 UAs obligatorias** del mapa curricular ISC 2020, con `semestre` 1-8 (50 celdas en el mapa, 4 son slots de optativa A1, A2, B1, B2 que se llenan desde el catálogo optativo)
+- **24 UAs optativas** (catálogo) con `semestre = 6` por default, para los slots A1, A2, B1, B2 de semestres 6 y 7
+
+Origen de los datos: `resources/docs/mapaCurricularISC2020.pdf` y
+`resources/docs/mapaCurricularISC2020_optativas.pdf`.
 
 ### Grupos de navegación
 
@@ -140,13 +179,15 @@ Para crear datos usar la API REST (`/api/v1/...`) o tinker.
 ### Estructura Filament
 
 ```
-app/Filament/Resources/
-  {Modelo}s/{Modelo}Resource.php       ← canCreate/canEdit/canDelete = false
-  {Modelo}s/Pages/List{Modelo}.php     ← sin CreateAction
-  {Modelo}s/Pages/View{Modelo}.php     ← sin EditAction
-  {Modelo}s/Tables/{Modelo}sTable.php  ← solo ViewAction, sin BulkActions
-  {Modelo}s/Schemas/{Modelo}Form.php
-  {Modelo}s/Schemas/{Modelo}Infolist.php
+app/Filament/
+  Pages/Auth/Login.php                  ← login custom (identificador en lugar de email)
+  Resources/
+    {Modelo}s/{Modelo}Resource.php      ← canCreate/canEdit/canDelete = false
+    {Modelo}s/Pages/List{Modelo}.php    ← sin CreateAction
+    {Modelo}s/Pages/View{Modelo}.php    ← sin EditAction
+    {Modelo}s/Tables/{Modelo}sTable.php ← solo ViewAction, sin BulkActions
+    {Modelo}s/Schemas/{Modelo}Form.php
+    {Modelo}s/Schemas/{Modelo}Infolist.php
 ```
 
 ## Auth web (Breeze + Blade)
@@ -183,6 +224,11 @@ php artisan scramble:export --path=public/api.json
 
 Generador: `dedoc/scramble` v0.13 — infiere desde FormRequests + Resources + tipos de retorno.
 Seguridad: `MiddlewareAuthSecurityStrategy` — rutas con `auth:sanctum` → bearer requerido; `auth/register` y `auth/login` → públicas.
+
+> **Regla:** cada vez que cambie la API (nuevo endpoint, nuevo campo, cambio de validación) regenerar el spec:
+> ```bash
+> php artisan scramble:export --path=public/api.json
+> ```
 
 ## Comandos
 

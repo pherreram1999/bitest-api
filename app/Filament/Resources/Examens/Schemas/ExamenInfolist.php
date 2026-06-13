@@ -15,7 +15,8 @@ class ExamenInfolist
                 TextEntry::make('descripcion'),
                 TextEntry::make('horario')
                     ->dateTime(),
-                TextEntry::make('semestre')
+                TextEntry::make('unidadAprendizaje.semestre')
+                    ->label('Semestre')
                     ->numeric(),
                 TextEntry::make('user_id')
                     ->numeric(),

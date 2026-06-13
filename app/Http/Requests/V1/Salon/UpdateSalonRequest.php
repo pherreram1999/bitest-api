@@ -14,7 +14,7 @@ class UpdateSalonRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nombre'      => ['sometimes', 'string', 'max:255'],
+            'nombre' => ['sometimes', 'string', 'max:255'],
             'edificio_id' => ['sometimes', 'integer', 'exists:edificios,id,deleted_at,NULL'],
         ];
     }
