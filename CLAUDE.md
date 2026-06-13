@@ -10,17 +10,7 @@ Usar en cualquier texto institucional, encabezados de PDF, reportes, o branding 
 
 - **Framework:** Laravel 13.8
 - **PHP:** 8.3
-- **DB:** libSQL/Turso (`turso/libsql`, driver custom) — requiere PHP FFI (`extension=ffi`, `ffi.enable=true`)
-  - Sin `TURSO_DATABASE_URL` → archivo local `database/database.db`
-  - Con `TURSO_DATABASE_URL` + `TURSO_AUTH_TOKEN` → remoto Turso puro
-  - `turso/libsql-laravel` no soporta Laravel 13 (sólo ^11|^12), por eso se
-    registra a mano `DB::extend('libsql', …)` en `AppServiceProvider::boot`,
-    devolviendo un `SQLiteConnection` con un `LibsqlPDO` propio.
-  - `App\Database\LibsqlPDO` y `App\Database\LibsqlPDOStatement` envuelven
-    al PDO de `turso/libsql` y difieren los `bindValue()` hacia `execute($params)`.
-    Esto evita el segfault de FFI al bindear `null`/cadenas vacías con
-    `PDO::PARAM_STR` (la `CharBox` de libsql deja el puntero sin inicializar
-    para strings falsy y `bindValue` no maneja `PARAM_NULL`).
+- **DB:** MySQL 8+ — driver nativo de Laravel (`pdo_mysql`)
 - **Auth:** Laravel Sanctum — personal access tokens (bearer)
 
 ## Dominio

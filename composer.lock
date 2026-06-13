@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fc5742787232a5d6d4a19bba24b0c927",
+    "content-hash": "30635b02f7efb1ad5832cbac6023c9b6",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -8810,60 +8810,6 @@
             "time": "2025-12-02T11:56:42+00:00"
         },
         {
-            "name": "turso/libsql",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tursodatabase/libsql-php.git",
-                "reference": "4f6c5669ee844074865a1ea4935d5440ebd28571"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tursodatabase/libsql-php/zipball/4f6c5669ee844074865a1ea4935d5440ebd28571",
-                "reference": "4f6c5669ee844074865a1ea4935d5440ebd28571",
-                "shasum": ""
-            },
-            "require": {
-                "ext-ffi": "*",
-                "php": ">=8.3"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.64",
-                "phpstan/phpstan": "2.0.x-dev",
-                "phpunit/phpunit": "^11"
-            },
-            "default-branch": true,
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "src/functions.php"
-                ],
-                "psr-4": {
-                    "Libsql\\": "src/",
-                    "Libsql\\Tests\\": "tests/"
-                },
-                "classmap": [
-                    "src/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Levy A.",
-                    "email": "levyddsa@gmail.com"
-                }
-            ],
-            "description": "libSQL bindings for PHP",
-            "support": {
-                "issues": "https://github.com/tursodatabase/libsql-php/issues",
-                "source": "https://github.com/tursodatabase/libsql-php/tree/master"
-            },
-            "time": "2025-06-16T14:43:24+00:00"
-        },
-        {
             "name": "ueberdosis/tiptap-php",
             "version": "2.1.0",
             "source": {
@@ -11366,9 +11312,7 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": {
-        "turso/libsql": 20
-    },
+    "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
