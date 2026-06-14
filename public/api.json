@@ -939,6 +939,86 @@
                 }
             }
         },
+        "/charts/examenes-por-carrera": {
+            "get": {
+                "operationId": "chart.examenesPorCarrera",
+                "summary": "N\u00famero de ex\u00e1menes activos agrupados por carrera",
+                "tags": [
+                    "Chart"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "labels": {
+                                            "type": "array",
+                                            "items": {}
+                                        },
+                                        "values": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "labels",
+                                        "values"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
+        "/charts/inscritos-por-materia": {
+            "get": {
+                "operationId": "chart.inscritosPorMateria",
+                "summary": "N\u00famero de alumnos inscritos agrupados por unidad de aprendizaje (materia).\nCuenta filas del pivot alumno_examen para ex\u00e1menes activos",
+                "tags": [
+                    "Chart"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "labels": {
+                                            "type": "array",
+                                            "items": {}
+                                        },
+                                        "values": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "integer"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "labels",
+                                        "values"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
         "/edificios/{id}/restore": {
             "post": {
                 "operationId": "edificio.restore",
