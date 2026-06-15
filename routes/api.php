@@ -42,7 +42,8 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('unidades-aprendizaje', UnidadAprendizajeController::class)
             ->parameters(['unidades-aprendizaje' => 'unidad_aprendizaje']);
         Route::apiResource('edificios', EdificioController::class);
-        Route::apiResource('salones', SalonController::class);
+        Route::apiResource('salones', SalonController::class)
+            ->parameters(['salones' => 'salon']);
         Route::apiResource('areas', AreaController::class);
         Route::apiResource('profesores', ProfesorController::class)
             ->parameters(['profesores' => 'profesor']);
