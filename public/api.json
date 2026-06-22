@@ -1068,6 +1068,17 @@
                 ],
                 "parameters": [
                     {
+                        "name": "numero",
+                        "in": "query",
+                        "schema": {
+                            "type": [
+                                "integer",
+                                "null"
+                            ],
+                            "minimum": 1
+                        }
+                    },
+                    {
                         "name": "nombre",
                         "in": "query",
                         "schema": {
@@ -1281,9 +1292,12 @@
                         "name": "edificio",
                         "in": "path",
                         "required": true,
-                        "description": "The edificio ID",
+                        "description": "The edificio numero",
                         "schema": {
-                            "type": "integer"
+                            "type": [
+                                "integer",
+                                "null"
+                            ]
                         }
                     }
                 ],
@@ -1324,9 +1338,12 @@
                         "name": "edificio",
                         "in": "path",
                         "required": true,
-                        "description": "The edificio ID",
+                        "description": "The edificio numero",
                         "schema": {
-                            "type": "integer"
+                            "type": [
+                                "integer",
+                                "null"
+                            ]
                         }
                     }
                 ],
@@ -1379,9 +1396,12 @@
                         "name": "edificio",
                         "in": "path",
                         "required": true,
-                        "description": "The edificio ID",
+                        "description": "The edificio numero",
                         "schema": {
-                            "type": "integer"
+                            "type": [
+                                "integer",
+                                "null"
+                            ]
                         }
                     }
                 ],
@@ -1842,7 +1862,7 @@
         "/mapa/canvas": {
             "get": {
                 "operationId": "mapa.canvas",
-                "description": "Devuelve el canvas l\u00f3gico (1024\u00d7560 px) con todos los elementos del plano:\nedificios reales (tappable, con edificio_id) y zonas decorativas (tappable=false).\n\nFlujo Flutter:\n  1. GET /api/v1/mapa/canvas \u2192 obtener canvas + elements\n  2. CustomPainter: scale = min(size.width / canvas.width, size.height / canvas.height)\n  3. onTapDown \u2192 hit-test sobre elements donde tappable=true\n  4. Al tap \u2192 GET /api/v1/edificios/{edificio_id} para listar salones",
+                "description": "Devuelve el canvas l\u00f3gico (1024\u00d7560 px) con todos los elementos del plano:\nedificios reales (tappable, con edificio_numero) y zonas decorativas (tappable=false).\n\nFlujo Flutter:\n  1. GET /api/v1/mapa/canvas \u2192 obtener canvas + elements\n  2. CustomPainter: scale = min(size.width / canvas.width, size.height / canvas.height)\n  3. onTapDown \u2192 hit-test sobre elements donde tappable=true\n  4. Al tap \u2192 GET /api/v1/edificios/{edificio_numero} para listar salones",
                 "summary": "Spec de dibujo del plano ESCOM para Flutter CustomPainter",
                 "tags": [
                     "Mapa"
@@ -3971,6 +3991,12 @@
                     "id": {
                         "type": "integer"
                     },
+                    "numero": {
+                        "type": [
+                            "integer",
+                            "null"
+                        ]
+                    },
                     "nombre": {
                         "type": "string"
                     },
@@ -3997,6 +4023,7 @@
                 },
                 "required": [
                     "id",
+                    "numero",
                     "nombre",
                     "created_at",
                     "updated_at"
@@ -4312,12 +4339,17 @@
             "StoreEdificioRequest": {
                 "type": "object",
                 "properties": {
+                    "numero": {
+                        "type": "integer",
+                        "minimum": 1
+                    },
                     "nombre": {
                         "type": "string",
                         "maxLength": 255
                     }
                 },
                 "required": [
+                    "numero",
                     "nombre"
                 ],
                 "title": "StoreEdificioRequest"
@@ -4536,6 +4568,10 @@
             "UpdateEdificioRequest": {
                 "type": "object",
                 "properties": {
+                    "numero": {
+                        "type": "integer",
+                        "minimum": 1
+                    },
                     "nombre": {
                         "type": "string",
                         "maxLength": 255

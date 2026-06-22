@@ -10,17 +10,20 @@ class EdificioSeeder extends Seeder
     public function run(): void
     {
         $edificios = [
-            'Edificio 1',
-            'Edificio 2',
-            'Edificio 3',
-            'Edificio 4',
-            'Edificio 5',
-            'Edificio de Laboratorios',
-            'Edificio de Gobierno',
+            ['numero' => 1, 'nombre' => 'Edificio 1'],
+            ['numero' => 2, 'nombre' => 'Edificio 2'],
+            ['numero' => 3, 'nombre' => 'Edificio 3'],
+            ['numero' => 4, 'nombre' => 'Edificio 4'],
+            ['numero' => 5, 'nombre' => 'Edificio 5'],
+            ['numero' => 6, 'nombre' => 'Edificio de Laboratorios'],
+            ['numero' => 7, 'nombre' => 'Edificio de Gobierno'],
         ];
 
-        foreach ($edificios as $nombre) {
-            Edificio::firstOrCreate(['nombre' => $nombre]);
+        foreach ($edificios as $edificio) {
+            Edificio::firstOrCreate(
+                ['numero' => $edificio['numero']],
+                ['nombre' => $edificio['nombre']]
+            );
         }
     }
 }

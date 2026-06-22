@@ -13,6 +13,10 @@ class EdificiosTable
     {
         return $table
             ->columns([
+                TextColumn::make('numero')
+                    ->label('Número')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('nombre')
                     ->searchable(),
                 TextColumn::make('deleted_at')

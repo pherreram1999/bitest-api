@@ -11,6 +11,7 @@ class EdificioResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'numero' => $this->numero,
             'nombre' => $this->nombre,
             'salones' => SalonResource::collection($this->whenLoaded('salones')),
             'created_at' => $this->created_at,

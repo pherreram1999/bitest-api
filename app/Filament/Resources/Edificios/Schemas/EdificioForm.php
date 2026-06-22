@@ -11,6 +11,12 @@ class EdificioForm
     {
         return $schema
             ->components([
+                TextInput::make('numero')
+                    ->label('Número')
+                    ->required()
+                    ->integer()
+                    ->minValue(1)
+                    ->unique(ignoreRecord: true),
                 TextInput::make('nombre')
                     ->required(),
             ]);

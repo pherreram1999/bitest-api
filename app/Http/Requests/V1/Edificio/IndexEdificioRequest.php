@@ -14,6 +14,7 @@ class IndexEdificioRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'numero' => ['sometimes', 'nullable', 'integer', 'min:1'],
             'nombre' => ['sometimes', 'nullable', 'string', 'max:255'],
         ];
     }

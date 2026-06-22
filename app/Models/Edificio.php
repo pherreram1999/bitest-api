@@ -12,19 +12,32 @@ use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
+ * @property int $numero
  * @property string $nombre
  * @property Carbon|null $deleted_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  * @property-read Collection<int, Salon> $salones
  */
-#[Fillable(['nombre'])]
+#[Fillable(['numero', 'nombre'])]
 class Edificio extends Model
 {
     use HasApiFilters, SoftDeletes;
 
     /** @var array<int, string> */
     protected array $filterableText = ['nombre'];
+
+    /** @var array<int, string> */
+    protected array $filterableExact = ['numero'];
+
+    /**
+     * Usa `numero` como clave de resolución en route model binding,
+     * para que /api/v1/edificios/{edificio} reciba el número del edificio.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'numero';
+    }
 
     /**
      * Salones del edificio.

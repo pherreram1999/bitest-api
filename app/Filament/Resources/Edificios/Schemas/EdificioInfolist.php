@@ -12,6 +12,8 @@ class EdificioInfolist
     {
         return $schema
             ->components([
+                TextEntry::make('numero')
+                    ->label('Número'),
                 TextEntry::make('nombre'),
                 TextEntry::make('deleted_at')
                     ->dateTime()
