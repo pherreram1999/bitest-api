@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AreaController;
 use App\Http\Controllers\Api\V1\ChartController;
+use App\Http\Controllers\Api\V1\MapaController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CarreraController;
 use App\Http\Controllers\Api\V1\EdificioController;
@@ -57,6 +58,9 @@ Route::prefix('v1')->group(function () {
         Route::post('mis-examenes/{examen}', [MisExamenesController::class, 'store']);
         Route::get('mis-examenes/{examen}/ical', [MisExamenesController::class, 'icalExamen']);
         Route::delete('mis-examenes/{examen}', [MisExamenesController::class, 'destroy']);
+
+        // Mapa canvas (plano ESCOM para Flutter CustomPainter)
+        Route::get('mapa/canvas', [MapaController::class, 'canvas']);
 
         // Charts (agregaciones para Flutter/fl_chart)
         Route::get('charts/examenes-por-carrera', [ChartController::class, 'examenesPorCarrera']);

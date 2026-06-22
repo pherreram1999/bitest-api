@@ -1839,6 +1839,39 @@
                 }
             }
         },
+        "/mapa/canvas": {
+            "get": {
+                "operationId": "mapa.canvas",
+                "description": "Devuelve el canvas l\u00f3gico (1024\u00d7560 px) con todos los elementos del plano:\nedificios reales (tappable, con edificio_id) y zonas decorativas (tappable=false).\n\nFlujo Flutter:\n  1. GET /api/v1/mapa/canvas \u2192 obtener canvas + elements\n  2. CustomPainter: scale = min(size.width / canvas.width, size.height / canvas.height)\n  3. onTapDown \u2192 hit-test sobre elements donde tappable=true\n  4. Al tap \u2192 GET /api/v1/edificios/{edificio_id} para listar salones",
+                "summary": "Spec de dibujo del plano ESCOM para Flutter CustomPainter",
+                "tags": [
+                    "Mapa"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`MapaCanvasResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/MapaCanvasResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/AuthenticationException"
+                    }
+                }
+            }
+        },
         "/mis-examenes": {
             "get": {
                 "operationId": "misExamenes.index",
@@ -4052,6 +4085,26 @@
                     "device_name"
                 ],
                 "title": "LoginRequest"
+            },
+            "MapaCanvasResource": {
+                "type": "object",
+                "properties": {
+                    "canvas": {
+                        "type": "string"
+                    },
+                    "elements": {
+                        "type": "string"
+                    },
+                    "style": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "canvas",
+                    "elements",
+                    "style"
+                ],
+                "title": "MapaCanvasResource"
             },
             "PlanEstudioResource": {
                 "type": "object",
