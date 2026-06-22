@@ -1865,11 +1865,9 @@
                                 }
                             }
                         }
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/AuthenticationException"
                     }
-                }
+                },
+                "security": []
             }
         },
         "/mis-examenes": {

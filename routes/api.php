@@ -20,6 +20,9 @@ Route::prefix('v1')->group(function () {
     Route::post('auth/register', [AuthController::class, 'register']);
     Route::post('auth/login', [AuthController::class, 'login']);
 
+    // ── Mapa canvas (público) ─────────────────────────────────────────────────
+    Route::get('mapa/canvas', [MapaController::class, 'canvas']);
+
     // ── Rutas protegidas por personal access token ────────────────────────────
     Route::middleware('auth:sanctum')->group(function () {
 
@@ -58,9 +61,6 @@ Route::prefix('v1')->group(function () {
         Route::post('mis-examenes/{examen}', [MisExamenesController::class, 'store']);
         Route::get('mis-examenes/{examen}/ical', [MisExamenesController::class, 'icalExamen']);
         Route::delete('mis-examenes/{examen}', [MisExamenesController::class, 'destroy']);
-
-        // Mapa canvas (plano ESCOM para Flutter CustomPainter)
-        Route::get('mapa/canvas', [MapaController::class, 'canvas']);
 
         // Charts (agregaciones para Flutter/fl_chart)
         Route::get('charts/examenes-por-carrera', [ChartController::class, 'examenesPorCarrera']);
